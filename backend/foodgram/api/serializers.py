@@ -1,12 +1,12 @@
+from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
+from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                            RecipeTag, ShoppingCart, Tag)
 from users.models import Subscription, UserFoodgram
-from recipes.models import (Ingredient, Tag, Recipe, ShoppingCart,
-                            Favorite, RecipeIngredient, RecipeTag)
 
 User = get_user_model()
 
@@ -151,30 +151,35 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
-        list = []
+        ingredients_data = set()
         for element in ingredients:
             amount = element['amount']
-            if int(amount) < 1:
+            if int(amount) < 1 or int(amount) > 32:
                 raise serializers.ValidationError({
                     'amount': 'Количество ингредиента должно быть больше 0!'
                 })
-            if element['id'] in list:
+            if element['id'] in ingredients_data:
                 raise serializers.ValidationError({
                     'ingredient': 'Ингредиенты должны быть уникальными!'
                 })
-            list.append(element['id'])
+            ingredients_data.add(element['id'])
         return data
 
     def create_ingredients(self, ingredients, recipe):
+        recipe_ingredients = []
         for element in ingredients:
             ingredient = Ingredient.objects.get(id=element['id'])
-            RecipeIngredient.objects.create(
-                ingredient=ingredient, recipe=recipe, amount=element['amount']
+            recipe_ingredient = RecipeIngredient(
+                ingredient=ingredient,
+                recipe=recipe,
+                amount=element['amount']
             )
+            recipe_ingredients.append(recipe_ingredient)
+        RecipeIngredient.objects.bulk_create(recipe_ingredients)
 
     def tag(self, tags, recipe):
-        for tag in tags:
-            RecipeTag.objects.create(recipe=recipe, tag=tag)
+        recipe_tags = [RecipeTag(recipe=recipe, tag=tag) for tag in tags]
+        RecipeTag.objects.bulk_create(recipe_tags)
 
     def create(self, validated_data):
         """Создание рецепта только авторизованному пользователю."""
@@ -214,7 +219,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShoppingCart
-        fields = ['__all__']
+        fields = ['user', 'recipe']
 
     def to_representation(self, instance):
         return ShoppingCartSerializer(instance.recipe, context={
@@ -228,7 +233,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Favorite
-        fields = ['__all__']
+        fields = ['user', 'recipe']
 
 
 class FavoritListSerializer(serializers.ModelSerializer):
@@ -237,7 +242,7 @@ class FavoritListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['__all__']
+        fields = ['id', 'name', 'image', 'cooking_time']
 
 
 class SubscriptionsNumberSerializer(serializers.ModelSerializer):

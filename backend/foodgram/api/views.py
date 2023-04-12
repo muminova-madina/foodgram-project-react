@@ -1,27 +1,25 @@
 import csv
+from http import HTTPStatus
 
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from djoser.views import UserViewSet
-from rest_framework import mixins, viewsets, permissions, filters
-from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
+from djoser.views import UserViewSet
+from rest_framework import filters, mixins, permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from api.pagination import CustomPagination
-from api.serializers import (IngredientSerializer, CreateRecipeSerializer,
-                             RecipeSerializer, ShoppingCartSerializer,
-                             TagSerializer, FavoriteSerializer,
-                             SubscriptionSerializer, SubscriptionsNumberSerializer)
-from recipes.models import Ingredient, Recipe, ShoppingCart, Favorite, Tag, User
-
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model
-
+from api.serializers import (CreateRecipeSerializer, FavoriteSerializer,
+                             IngredientSerializer, RecipeSerializer,
+                             ShoppingCartSerializer, SubscriptionSerializer,
+                             SubscriptionsNumberSerializer, TagSerializer)
+from recipes.models import (Favorite, Ingredient, Recipe, ShoppingCart, Tag,
+                            User)
 from users.models import Subscription
-
 
 User = get_user_model()
 
@@ -76,7 +74,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     """Вьюсет для Рецептов."""
     queryset = Recipe.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    #filterset_fields = ['author', 'tags__slug', 'is_favorited', 'is_in_shopping_cart']
     search_fields = ['name', 'ingredients__name', 'author__username']
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -84,7 +81,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """POST, PATCH или PUT-запрос"""
         if self.action in ['create', 'partial_update']:
             return CreateRecipeSerializer
-        elif self.action == 'update':
+        if self.action == 'update':
             return CreateRecipeSerializer
         return RecipeSerializer
 
@@ -97,7 +94,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         user = request.user
         purchase = get_object_or_404(ShoppingCart, user=user, recipe=recipe)
         purchase.delete()
-        return Response(status=204)
+        return Response(status=HTTPStatus.NO_CONTENT)
 
     @shopping_list.mapping.post
     def add_to_list(self, request):
@@ -105,16 +102,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer = ShoppingCartSerializer(data={'recipe': recipe.id})
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
-        return Response(serializer.data, status=201)
-
-    @action(detail=True, methods=['post'])
-    def favorite(self, request):
-        recipe = self.get_object()
-        serializer = RecipeSerializer(recipe, data={'is_favorited': True}, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        Favorite.objects.get_or_create(user=request.user, recipe=recipe)
-        return Response(serializer.data, status=200)
+        return Response(serializer.data, status=HTTPStatus.CREATED)
 
     @action(detail=True, methods=['delete'])
     def unfavorite(self, request):
@@ -123,7 +111,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         Favorite.objects.filter(user=request.user, recipe=recipe).delete()
-        return Response(status=204)
+        return Response(status=HTTPStatus.NO_CONTENT)
 
 
 class TagViewSet(viewsets.ModelViewSet):

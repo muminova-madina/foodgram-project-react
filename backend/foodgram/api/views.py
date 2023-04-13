@@ -173,8 +173,8 @@ def download_shopping_cart(request):
     response['Content-Disposition'] = 'attachment; filename="shopping_cart.txt"'
 
     writer = csv.writer(response, delimiter='\t')
-    for item in shopping_cart_items:
-        writer.writerow([item.ingredient.name, item.amount])
+    rows = ([item.ingredient.name, item.amount] for item in shopping_cart_items)
+    writer.writerows(rows)
 
     return response
 

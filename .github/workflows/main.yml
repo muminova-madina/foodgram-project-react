@@ -52,8 +52,10 @@ jobs:
           tags: ognennayazvezda/foodgram_frontend:latest
 
   deploy:
+    name: Deploy on Cloud
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
+    if: github.ref_name == 'master'
     steps:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
@@ -61,13 +63,11 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            sudo docker pull madina/backend:v1
-            sudo docker pull madina/frontend:v1
             sudo docker-compose stop
-            sudo docker-compose rm backend
-            sudo docker-compose rm frontend
+            sudo docker-compose rm -f backend frontend
+            sudo docker image rm brett0n/foodgram_backend brett0n/foodgram_frontend
+            sudo docker-compose pull backend frontend
             rm .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -76,8 +76,8 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+            echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
             sudo docker-compose up -d
   send_message:
     runs-on: ubuntu-latest

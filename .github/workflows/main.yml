@@ -66,7 +66,7 @@ jobs:
           script: |
             sudo docker-compose stop
             sudo docker-compose rm -f backend frontend
-            sudo docker image rm brett0n/foodgram_backend brett0n/foodgram_frontend
+            sudo docker image rm ognennayazvezda/foodgram_backend ognennayazvezda/foodgram_frontend
             sudo docker-compose pull backend frontend
             rm .env
             touch .env

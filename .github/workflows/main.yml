@@ -42,14 +42,14 @@ jobs:
         with:
           context: backend/foodgram/
           push: true
-          tags: madina/foodgram_backend:latest
+          tags: ognennayazvezda/foodgram_backend:latest
 
       - name: Push frontend image to Docker Hub
         uses: docker/build-push-action@v4
         with:
           context: frontend/
           push: true
-          tags: madina/foodgram_frontend:latest
+          tags: ognennayazvezda/foodgram_frontend:latest
 
   deploy:
     runs-on: ubuntu-latest

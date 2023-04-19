@@ -154,7 +154,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         ingredients_data = set()
         for element in ingredients:
             amount = element['amount']
-            if int(amount) < 1 or int(amount) > 32:
+            if int(amount) < 1 or int(amount) > 3200:
                 raise serializers.ValidationError({
                     'amount': 'Количество ингредиента должно быть больше 0!'
                 })
@@ -165,16 +165,16 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             ingredients_data.add(element['id'])
         return data
 
-    def create_ingredients(self, ingredients, recipe):
+    def create_recipe_ingredients(self, ingredients, recipe):
         recipe_ingredients = []
         for element in ingredients:
-            ingredient = Ingredient.objects.get(id=element['id'])
-            recipe_ingredient = RecipeIngredient(
-                ingredient=ingredient,
-                recipe=recipe,
-                amount=element['amount']
-            )
-            recipe_ingredients.append(recipe_ingredient)
+            ingredient_id = element.get('id')
+            amount = element.get('amount')
+            if ingredient_id and amount:
+                recipe_ingredient = RecipeIngredient(
+                    ingredient_id=ingredient_id,
+                    recipe=recipe, amount=amount)
+                recipe_ingredients.append(recipe_ingredient)
         RecipeIngredient.objects.bulk_create(recipe_ingredients)
 
     def tag(self, tags, recipe):

@@ -10,7 +10,7 @@ services:
       - 5432:5432
 
   backend:
-    image: madina/backend:v1
+    image: ognennayazvezda/foodgram_backend:latest
     volumes:
       - ../static/:/app/static/
       - ../media/:/app/media/recipes/

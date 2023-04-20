@@ -11,9 +11,12 @@ services:
 
   backend:
     image: ognennayazvezda/foodgram_backend:latest
+    build:
+      context: ../backend/foodgram
+      dockerfile: Dockerfile
     volumes:
       - ../static/:/app/static/
-      - ../media/:/app/media/recipes/
+      - ../media/:/app/media/
     depends_on:
       - db
     env_file:
@@ -21,11 +24,13 @@ services:
     restart: always
 
   frontend:
+    image: ognennayazvezda/foodgram_frontend:latest
     build:
       context: ../frontend
       dockerfile: Dockerfile
     volumes:
       - ../frontend/:/app/result_build/
+
   nginx:
     image: nginx:1.19.3
     ports:

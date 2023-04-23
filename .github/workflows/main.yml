@@ -67,8 +67,8 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend_foodgram
-            sudo docker-compose stop
-            sudo docker-compose rm
+            sudo docker compose stop
+            sudo docker compose rm
             sudo rm .env
             touch .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
@@ -78,7 +78,7 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            sudo docker-compose up -d
+            sudo docker compose up -d
   send_message:
     runs-on: ubuntu-latest
     needs: deploy

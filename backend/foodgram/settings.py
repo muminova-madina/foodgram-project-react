@@ -128,8 +128,6 @@ NAME_FIELD_MAX_LENGTH = 200
 USER_NAME_MAX_LENGTH = 150
 SLUG_FIELD_MAX_LENGTH = 50
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

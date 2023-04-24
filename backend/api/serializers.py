@@ -114,7 +114,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         ingredients_data = set()
         for element in ingredients:
             amount = element['amount']
-            if int(amount) < 1 or int(amount) > 3200:
+            if int(amount) < 1:
                 raise serializers.ValidationError({
                     'amount': 'Количество ингредиента должно быть больше 0!'
                 })

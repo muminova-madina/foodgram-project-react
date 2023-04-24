@@ -18,7 +18,7 @@ SECRET_KEY = 'django-insecure-4apcfhqs$@4=*#gel$i58tr&_l5912&@z%ksa=d@g*9xx+1_*#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', '*'), '*']
+ALLOWED_HOSTS = ['51.250.104.38']
 
 # Application definition
 
@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', default='postgres'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-        'HOST': os.getenv('DB_HOST', default='db'),
+        'HOST': os.getenv('DB_HOST', default='localhost'),
         'PORT': os.getenv('DB_PORT', default='5432')
     }
 }

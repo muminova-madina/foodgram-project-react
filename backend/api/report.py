@@ -45,7 +45,7 @@ class NumberedCanvas(canvas.Canvas):
         )
 
 
-def my_first_page(canvas, doc):
+def first_page(canvas, doc):
     canvas.saveState()
     canvas.setFont('DejaVuSerif', 15)
     canvas.drawCentredString(PAGE_WIDTH / 2.0, PAGE_HEIGHT - 38, doc.title)
@@ -53,7 +53,7 @@ def my_first_page(canvas, doc):
     canvas.restoreState()
 
 
-def my_later_pages(canvas, doc):
+def later_pages(canvas, doc):
     canvas.saveState()
     canvas.setFont('DejaVuSerif', 9)
     canvas.restoreState()

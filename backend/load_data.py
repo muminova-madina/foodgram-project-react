@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         with open(
-                '../../data/ingredients.json',
+                '../backend/ingredients.json',
                 encoding='utf-8') as f:
             ingredients = json.load(f)
 

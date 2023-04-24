@@ -142,7 +142,7 @@ class RecipeTag(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.tag.name} {self.ingredient.name}'
+        return f'{self.tag.name} {self.recipe.name}'
 
 
 class ShoppingCart(models.Model):

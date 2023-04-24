@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             RecipeTag, ShoppingCart, Tag)
+from foodgram.settings import MAX_AMOUNT
 from users.serializers import CustomUserSerializer
 
 User = get_user_model()
@@ -114,9 +115,13 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         ingredients_data = set()
         for element in ingredients:
             amount = element['amount']
-            if int(amount) < 1 or int(amount) > 3200:
+            if int(amount) < 1:
                 raise serializers.ValidationError({
                     'amount': 'Количество ингредиента должно быть больше 0!'
+                })
+            if int(amount) > MAX_AMOUNT:
+                raise serializers.ValidationError({
+                    'amount': 'Количество ингредиента должно меньше 3200!'
                 })
             if element['id'] in ingredients_data:
                 raise serializers.ValidationError({

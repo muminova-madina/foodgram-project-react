@@ -33,3 +33,9 @@ def create_or_delete_record(request, record, serializer_data, params):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+def get_recipe_serializer():
+    from api.serializers import FavoritListSerializer
+
+    return FavoritListSerializer

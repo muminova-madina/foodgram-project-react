@@ -9,6 +9,8 @@ from users.serializers import CustomUserSerializer
 
 User = get_user_model()
 
+MAX_VALUE = 32000
+
 
 class IngredientSerializer(serializers.ModelSerializer):
     """Сериализатор для модели Ингредиенты."""
@@ -109,7 +111,6 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         read_only_fields = ['author']
 
     def validate(self, data):
-        MAX_VALUE = 32000
         ingredients = self.initial_data.get('ingredients')
         ingredients_data = set()
         for element in ingredients:

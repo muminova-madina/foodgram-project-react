@@ -119,11 +119,11 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({
                     'amount': 'Количество ингредиента должно быть больше 0!'
                 })
-            elif int(amount) > MAX_VALUE:
+            if int(amount) > MAX_VALUE:
                 raise serializers.ValidationError({
                     'amount': 'Количество ингредиента должно быть меньше 32000!'
                 })
-            elif element['id'] in ingredients_data:
+            if element['id'] in ingredients_data:
                 raise serializers.ValidationError({
                     'ingredient': 'Ингредиенты должны быть уникальными!'
                 })

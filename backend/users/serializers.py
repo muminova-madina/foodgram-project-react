@@ -5,6 +5,7 @@ from drf_extra_fields.fields import LowercaseEmailField
 from rest_framework import serializers
 
 from api.utils import get_recipe_serializer
+from api.serializers import FavoritListSerializer
 
 User = get_user_model()
 
@@ -56,14 +57,6 @@ class SubscriptionSerializer(CustomUserSerializer):
             author_recipes = author_recipes[: int(recipes_limit)]
         except (MultiValueDictKeyError, ValueError):
             pass
-
-        if author_recipes:
-            serializer = get_recipe_serializer()(
-                author_recipes,
-                many=True,
-            )
-            return serializer.data
-
         return []
 
     @staticmethod

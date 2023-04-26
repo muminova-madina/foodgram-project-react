@@ -109,6 +109,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         read_only_fields = ['author']
 
     def validate(self, data):
+        MAX_VALUE = 32000
         ingredients = self.initial_data.get('ingredients')
         ingredients_data = set()
         for element in ingredients:
@@ -116,6 +117,10 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             if int(amount) < 1:
                 raise serializers.ValidationError({
                     'amount': 'Количество ингредиента должно быть больше 0!'
+                })
+            if int(amount) > MAX_VALUE:
+                raise serializers.ValidationError({
+                    'amount': 'Количество ингредиента должно быть меньше 32000!'
                 })
             if element['id'] in ingredients_data:
                 raise serializers.ValidationError({

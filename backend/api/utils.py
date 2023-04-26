@@ -5,13 +5,16 @@ from rest_framework.response import Response
 
 from recipes.models import RecipeIngredient
 
-
+FIVE_NUM = 5
+TWO_NUM = 2
+ZERO_NUM = 0
+TEN_NUM = 10
 def get_end_letter(value):
-    end_lib: Dict[int, str] = {5: '', 2: 'а', 0: ''}
+    end_lib: Dict[int, str] = {FIVE_NUM: '', TWO_NUM: 'а', ZERO_NUM: ''}
 
     for my_key in end_lib:
 
-        if value % 10 >= my_key:
+        if value % TEN_NUM >= my_key:
             return end_lib[my_key]
 
     return ''

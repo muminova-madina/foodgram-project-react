@@ -4,8 +4,6 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import LowercaseEmailField
 from rest_framework import serializers
 
-from api.utils import get_recipe_serializer
-from api.serializers import FavoritListSerializer
 
 User = get_user_model()
 

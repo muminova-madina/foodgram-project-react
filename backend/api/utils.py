@@ -3,7 +3,6 @@ from typing import Dict
 from rest_framework import exceptions, status
 from rest_framework.response import Response
 
-from recipes.models import RecipeIngredient
 
 FIVE_NUM = 5
 TWO_NUM = 2
@@ -36,9 +35,3 @@ def create_or_delete_record(request, record, serializer_data, params):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-def get_recipe_serializer():
-    from api.serializers import FavoritListSerializer
-
-    return FavoritListSerializer

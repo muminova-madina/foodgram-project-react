@@ -3,7 +3,6 @@ Cервис для публикаций и обмена рецептами.
 
 Авторизованные пользователи могут подписываться на понравившихся авторов, добавлять рецепты в избранное, в покупки, скачивать список покупок. Неавторизованным пользователям доступна регистрация, авторизация, просмотр рецептов других пользователей.
 
-![example branch parameter](https://github.com/madina-zvezda/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg)
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat&logo=Python&logoColor=56C0C0&color=008080)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/-Django-464646?style=flat&logo=Django&logoColor=56C0C0&color=008080)](https://www.djangoproject.com/)
 [![Django REST Framework](https://img.shields.io/badge/-Django%20REST%20Framework-464646?style=flat&logo=Django%20REST%20Framework&logoColor=56C0C0&color=008080)](https://www.django-rest-framework.org/)
@@ -17,7 +16,7 @@ Cервис для публикаций и обмена рецептами.
 [![GitHub%20Actions](https://img.shields.io/badge/-GitHub%20Actions-464646?style=flat&logo=GitHub%20actions&logoColor=56C0C0&color=008080)](https://github.com/features/actions)
 [![Yandex.Cloud](https://img.shields.io/badge/-Yandex.Cloud-464646?style=flat&logo=Yandex.Cloud&logoColor=56C0C0&color=008080)](https://cloud.yandex.ru/)
 
-##Проект доступен по адресу 
+## Проект доступен по адресу 
 ```
 http://51.250.104.38/recipes/
 ```
@@ -87,3 +86,5 @@ docker-compose exec backend python manage.py collectstatic
 ## Документация к API
 Чтобы открыть документацию локально, запустите сервер и перейдите по ссылке:
 [http://127.0.0.1/api/docs/](http://127.0.0.1/api/docs/)
+
+Автор Муминова Мадина

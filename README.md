@@ -87,4 +87,4 @@ docker-compose exec backend python manage.py collectstatic
 Чтобы открыть документацию локально, запустите сервер и перейдите по ссылке:
 [http://127.0.0.1/api/docs/](http://127.0.0.1/api/docs/)
 
-#Автор Муминова Мадина
+Автор Муминова Мадина
